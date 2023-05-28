@@ -22,15 +22,17 @@ The Axios library is our http request library for the stack, hence its usage her
 3. Initialize npm project: `npm init` or `npm init -y`
 4. Install Axios, Chalk, and Dotenv: `npm i axios chalk dotenv`
 5. Create new utility module file for colorizing functions: `mkdir utils && touch utils/chalk-utils.js`
-6. Create functions for logging strings in color. Students may create one for both the body and author of a quote, or one for each in a different color. Export the function as a named export.
+6. In `chalk-utils.js`, import chalk and create a function for logging strings in color. Students may create one for both the body and author of a quote, or one for each in a different color. Export the function. If two functions are created, these should be named exports.
     ```js
+    import chalk from 'chalk';
+
     function colorize(message) {
       console.log(chalk.cyanBright(message));
     }
 
-    export { colorize };
+    export default colorize;
     ```
-7. Create new service module file for quote CRUD functions: `mkdir services && touch services/quote-service.js`
+7. Create new service module file for CRUD functions: `mkdir services && touch services/quote-service.js`
 8. Import Axios and create instance.
     ```js
     import axios from 'axios';
@@ -51,7 +53,7 @@ The Axios library is our http request library for the stack, hence its usage her
         };
         return quote;
       } catch (error) {
-        logError(error);
+        throw error;
       }
     }
 
@@ -60,7 +62,7 @@ The Axios library is our http request library for the stack, hence its usage her
 10. Back in `index.js`, import the colorize utility and api service function.
     ```js
     import { getRandomQuote } from './services/quote-service.js';
-    import { colorize } from './utils/chalk-utils.js';
+    import colorize from './utils/chalk-utils.js';
     ```
 11. Call `getRandomQuote()` and store the result in a variable.
     ```js
@@ -85,7 +87,7 @@ The Axios library is our http request library for the stack, hence its usage her
     dotenv.config();
     const API_TOKEN = process.env.API_TOKEN;
     ```
-17. Modify the Axios instance to include an authorization header containing the token per the specs provided by FavQs.
+17. Modify the existing Axios instance to include an authorization header containing the token per the specs provided by FavQs.
     ```js
     const http = axios.create({
       baseURL: 'https://favqs.com/api/',
@@ -94,7 +96,7 @@ The Axios library is our http request library for the stack, hence its usage her
       },
     });
     ```
-18. Create and export an asynchronous function to retrieve a list of random quote from the FavQs API. Usage of async/await syntax recommended.
+18. Create and export an asynchronous function to retrieve a list of random quotes from the FavQs API. Usage of async/await syntax recommended.
     ```js
     async function getRandomQuotes() {
       try {
@@ -108,7 +110,7 @@ The Axios library is our http request library for the stack, hence its usage her
         });
         return quotes;
       } catch (error) {
-        logError(error);
+        throw error;
       }
     }
 
@@ -122,7 +124,7 @@ The Axios library is our http request library for the stack, hence its usage her
     ```js
     const randomQuotes = await getRandomQuote();
     ```
-21. Log the quote to the console in a loop using the colorize utility function.
+21. Log each quote to the console in a loop using the colorize utility function.
     ```js
     randomQuotes.forEach((quote) => {
       colorize(quote.body);
@@ -130,3 +132,9 @@ The Axios library is our http request library for the stack, hence its usage her
     });
     ```
 22. **Ninja Bonus:** Create a third service function that retrieves a list of filtered quotes. This requires query parameters to be added. Refer to [FavQs](https://favqs.com/api) and [Axios](https://axios-http.com/docs/req_config) documentation for more info. This sample project gets a list of quotes filtered by the tag "programming".
+
+## Notes:
+- There are more opportunities to further modularize the code. For instance: 
+  - Create a separate `parseQuote(jsonQuote)` helper function that parses the JSON body of the response and returns a Quote object containing the body and author of the quote. This answer key has an [example](./services/quote-service.js) in the `quote-service.js` file.
+  - Create a separate displayQuote helper function that formats the quote nicely and uses the colorize utility functions to log a quote to the console. An [example](./index.js) is located in the `index.js` file.
+- Students may also wish to choose a color for error messages and create an additional utility function to display error messages in bright red, for example. This answer key has [three color functions](./utils/chalk-utils.js) - `logQuote`, `logAuthor`, and `logError`.
