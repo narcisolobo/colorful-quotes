@@ -2,7 +2,7 @@
   "name": "colorful-quotes",
   "version": "1.0.0",
   "type": "module",
-  "description": "",
+  "description": "An example assignment for retrieving quotes from an API.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
