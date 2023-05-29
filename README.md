@@ -20,9 +20,10 @@ The Axios library is our http request library for the stack, hence its usage her
 1. Create new project directory and cd into it: `mkdir colorful-quotes && cd colorful-quotes`
 2. Create index.js: `touch index.js`
 3. Initialize npm project: `npm init` or `npm init -y`
-4. Install Axios, Chalk, and Dotenv: `npm i axios chalk dotenv`
-5. Create new utility module file for colorizing functions: `mkdir utils && touch utils/chalk-utils.js`
-6. In `chalk-utils.js`, import chalk and create a function for logging strings in color. Students may create one for both the body and author of a quote, or one for each in a different color. Export the function. If two functions are created, these should be named exports.
+4. Add "type" field to package.json with value of "module": `"type": "module"`
+5. Install Axios, Chalk, and Dotenv: `npm i axios chalk dotenv`
+6. Create new utility module file for colorizing functions: `mkdir utils && touch utils/chalk-utils.js`
+7. In `chalk-utils.js`, import chalk and create a function for logging strings in color. Students may create one for both the body and author of a quote, or one for each in a different color. Export the function. If two functions are created, these should be named exports.
     ```js
     import chalk from 'chalk';
 
@@ -32,8 +33,8 @@ The Axios library is our http request library for the stack, hence its usage her
 
     export default colorize;
     ```
-7. Create new service module file for CRUD functions: `mkdir services && touch services/quote-service.js`
-8. Import Axios and create instance.
+8. Create new service module file for CRUD functions: `mkdir services && touch services/quote-service.js`
+9. Import Axios and create instance.
     ```js
     import axios from 'axios';
 
@@ -41,7 +42,7 @@ The Axios library is our http request library for the stack, hence its usage her
       baseURL: 'https://favqs.com/api/',
     });
     ```
-9.  Create and export an asynchronous function to retrieve a random quote from the FavQs API. Usage of async/await syntax recommended.
+10. Create and export an asynchronous function to retrieve a random quote from the FavQs API. Usage of async/await syntax recommended.
     ```js
     async function getRandomQuote() {
       try {
@@ -59,35 +60,35 @@ The Axios library is our http request library for the stack, hence its usage her
 
     export { getRandomQuote };
     ```
-10. Back in `index.js`, import the colorize utility and api service function.
+11. Back in `index.js`, import the colorize utility and api service function.
     ```js
     import { getRandomQuote } from './services/quote-service.js';
     import colorize from './utils/chalk-utils.js';
     ```
-11. Call `getRandomQuote()` and store the result in a variable.
+12. Call `getRandomQuote()` and store the result in a variable.
     ```js
     // top-level await requires Node 14.8.0^
     const randomQuote = await getRandomQuote();
     ```
-12. Log the quote to the console using the colorize utility function.
+13. Log the quote to the console using the colorize utility function.
     ```js
     colorize(randomQuote.body);
     colorize(randomQuote.author);
     ```
-13. The Axios instance must be modified in preparation to fetch a list of random quotes. The endpoint requires an API key. Register to acquire a key on [the login page](https://favqs.com/login).
-14. Create `.env` file in root directory: `touch .env`
-15. Edit file to include your API token.
+14. The Axios instance must be modified in preparation to fetch a list of random quotes. The endpoint requires an API key. Register to acquire a key on [the login page](https://favqs.com/login).
+15. Create `.env` file in root directory: `touch .env`
+16. Edit file to include your API token.
     ```
     API_TOKEN=<YOUR_API_TOKEN>
     ```
-16. In `quote-service.js`, import the dotenv package, load `.env` file contents into `process.env`, and assign the value of the token to a variable.
+17. In `quote-service.js`, import the dotenv package, load `.env` file contents into `process.env`, and assign the value of the token to a variable.
     ```js
     import dotenv from 'dotenv';
 
     dotenv.config();
     const API_TOKEN = process.env.API_TOKEN;
     ```
-17. Modify the existing Axios instance to include an authorization header containing the token per the specs provided by FavQs.
+18. Modify the existing Axios instance to include an authorization header containing the token per the specs provided by FavQs.
     ```js
     const http = axios.create({
       baseURL: 'https://favqs.com/api/',
@@ -96,7 +97,7 @@ The Axios library is our http request library for the stack, hence its usage her
       },
     });
     ```
-18. Create and export an asynchronous function to retrieve a list of random quotes from the FavQs API. Usage of async/await syntax recommended.
+19. Create and export an asynchronous function to retrieve a list of random quotes from the FavQs API. Usage of async/await syntax recommended.
     ```js
     async function getRandomQuotes() {
       try {
@@ -116,22 +117,22 @@ The Axios library is our http request library for the stack, hence its usage her
 
     export { getRandomQuote, getRandomQuotes };
     ```
-19. Back in `index.js`, import the new api service function.
+20. Back in `index.js`, import the new api service function.
     ```js
     import { getRandomQuote, getRandomQuotes } from './services/quote-service.js';
     ```
-20. Call `getRandomQuotes()` and store the result in a variable.
+21. Call `getRandomQuotes()` and store the result in a variable.
     ```js
     const randomQuotes = await getRandomQuote();
     ```
-21. Log each quote to the console in a loop using the colorize utility function.
+22. Log each quote to the console in a loop using the colorize utility function.
     ```js
     randomQuotes.forEach((quote) => {
       colorize(quote.body);
       colorize(quote.author);
     });
     ```
-22. **Ninja Bonus:** Create a third service function that retrieves a list of filtered quotes. This requires query parameters to be added. Refer to [FavQs](https://favqs.com/api) and [Axios](https://axios-http.com/docs/req_config) documentation for more info. This sample project gets a list of quotes filtered by the tag "programming".
+23. **Ninja Bonus:** Create a third service function that retrieves a list of filtered quotes. This requires query parameters to be added. Refer to [FavQs](https://favqs.com/api) and [Axios](https://axios-http.com/docs/req_config) documentation for more info. This sample project gets a list of quotes filtered by the tag "programming".
 
 ## Notes:
 - There are more opportunities to further modularize the code. For instance: 
