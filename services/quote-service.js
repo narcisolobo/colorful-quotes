@@ -50,7 +50,7 @@ async function getRandomQuote() {
     const quote = parseQuote(data.quote);
     return quote;
   } catch (error) {
-    logError(error);
+    throw error;
   }
 }
 
@@ -65,7 +65,7 @@ async function getRandomQuotes() {
     const quotes = data.quotes.map((quote) => parseQuote(quote));
     return quotes;
   } catch (error) {
-    logError(error);
+    throw error;
   }
 }
 
@@ -87,7 +87,7 @@ async function getFilteredQuotes(filter, type) {
     const quotes = data.quotes.map((quote) => parseQuote(quote));
     return quotes;
   } catch (error) {
-    logError(error);
+    throw error;
   }
 }
 
